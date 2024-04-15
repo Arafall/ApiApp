@@ -31,6 +31,19 @@ struct ContentView: View {
         }
         .padding()
     }
+    
+    func getColor(colorBase: String) {
+        if let apiUrl = URL(string: "https://x-colors.yurace.pro/api/random/\(colorBase)") {
+            var request = URLRequest(url: apiUrl)
+            request.httpMethod = "GET"
+            URLSession.shared.dataTask(with: request) { data, request, error in
+                if let colorData = data {
+                    
+                }
+                
+            }
+        }
+    }
 }
 
 #Preview {
