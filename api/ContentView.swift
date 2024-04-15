@@ -7,6 +7,7 @@
 
 import SwiftUI
 //https://x-colors.yurace.pro/api/random/blue
+//https://github.com/cheatsnake/xColors-api?tab=readme-ov-file
 
 struct ContentView: View {
     struct Color: Codable {
