@@ -22,11 +22,16 @@ struct ContentView: View {
     
     @State var colors:[Color] = []
     var body: some View {
+        
+        
+        
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("Hello, world!")
+            
+            
             
             
         }
@@ -39,10 +44,13 @@ struct ContentView: View {
             request.httpMethod = "GET"
             URLSession.shared.dataTask(with: request) { data, request, error in
                 if let colorData = data {
-                    
+                    if let colorsFromAPI = try? JSONDecoder().decode(Result.self, from: colorData) {
+                        colors = colorsFromAPI.items
+                        print(colors)
+                    }
                 }
-                
-            }
+    
+            }.resume()
         }
     }
 }
