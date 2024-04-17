@@ -10,18 +10,19 @@ import SwiftUI
 //https://github.com/cheatsnake/xColors-api?tab=readme-ov-file
 
 struct ContentView: View {
-    struct ColorConvert: Codable {
+    struct ColorConverter: Codable {
         var hex: String
         var rgb: String
         var hsl: String
     }
     
     struct Result: Codable {
-        var item: ColorConvert
+        var items: [ColorConverter]
     }
     
-    @State var color: ColorConvert
-    var apiColor: Color
+    @State var colors:ColorConverter = ColorConverter(hex: "#FFFFF", rgb: "255, 255, 255", hsl: "100, 100%, 100%")
+    @State var pureRGB: [String.SubSequence] = []
+    
     var body: some View {
         
         
@@ -29,7 +30,19 @@ struct ContentView: View {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, world!")
+            
+            if pureRGB == [] {
+                Text("Hello world")
+            }
+            else {
+                Text(String(_:pureRGB[1]))
+            }
+
+            Button(action: {
+                getColor(colorBase: "red")
+            }, label: {
+                Text("Generate Color a red color")
+            })
             
             Button("Get Color", action: {
                 getColor(colorBase: "red")
@@ -48,29 +61,16 @@ struct ContentView: View {
             request.httpMethod = "GET"
             URLSession.shared.dataTask(with: request) { data, request, error in
                 if let colorData = data {
-                    if let colorFromAPI = try? JSONDecoder().decode(Result.self, from: colorData) {
-                        color = colorFromAPI.item
-                        print(colorFromAPI)
+                    print(colorData)
+                    if let colorsFromAPI = try? JSONDecoder().decode(ColorConverter.self, from: colorData) {
+                        colors = colorsFromAPI
+                        pureRGB = colors.rgb.split(separator: ", ")
+                        print(pureRGB)
                     }
-                    
                 }
     
             }.resume()
             
-            /*
-            var request = URLRequest(url: apiUrl)
-            request.httpMethod = "GET"
-            URLSession.shared.dataTask(with: request) { data, request, error in
-                if let colorData = data {
-                    
-                    if let colorsFromAPI = try? JSONDecoder().decode(Result.self, from: colorData) {
-                        colors = colorsFromAPI.items
-                        print(colors)
-                    }
-                }
-    
-            }.resume()
-            */
         }
     }
 }
