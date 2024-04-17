@@ -10,17 +10,19 @@ import SwiftUI
 //https://github.com/cheatsnake/xColors-api?tab=readme-ov-file
 
 struct ContentView: View {
-    struct Color: Codable {
+    struct ColorConverter: Codable {
         var hex: String
         var rgb: String
         var hsl: String
     }
     
     struct Result: Codable {
-        var items: [Color]
+        var items: [ColorConverter]
     }
     
-    @State var colors:[Color] = []
+    @State var colors:ColorConverter = ColorConverter(hex: "#FFFFF", rgb: "255, 255, 255", hsl: "100, 100%, 100%")
+    @State var pureRGB: [String.SubSequence] = []
+    
     var body: some View {
         
         
@@ -29,7 +31,19 @@ struct ContentView: View {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, world!")
+            
+            if pureRGB == [] {
+                Text("Hello world")
+            }
+            else {
+                Text(String(_:pureRGB[1]))
+            }
+
+            Button(action: {
+                getColor(colorBase: "red")
+            }, label: {
+                Text("Generate Color a red color")
+            })
             
             
             
@@ -44,9 +58,11 @@ struct ContentView: View {
             request.httpMethod = "GET"
             URLSession.shared.dataTask(with: request) { data, request, error in
                 if let colorData = data {
-                    if let colorsFromAPI = try? JSONDecoder().decode(Result.self, from: colorData) {
-                        colors = colorsFromAPI.items
-                        print(colors)
+                    print(colorData)
+                    if let colorsFromAPI = try? JSONDecoder().decode(ColorConverter.self, from: colorData) {
+                        colors = colorsFromAPI
+                        pureRGB = colors.rgb.split(separator: ", ")
+                        print(pureRGB)
                     }
                 }
     
