@@ -55,7 +55,7 @@ struct ContentView: View {
 
             
             Button("Get Color", action: {
-                getColor(colorBase: "red")
+                getColor()
                 
             })
             
@@ -63,7 +63,7 @@ struct ContentView: View {
         .padding()
     }
     
-    func getColor(colorBase: String) {
+    func getColor(colorBase: String = "") {
 
         if let apiUrl = URL(string: "https://x-colors.yurace.pro/api/random/\(colorBase)") {
             
