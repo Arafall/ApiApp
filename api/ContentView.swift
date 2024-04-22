@@ -27,22 +27,32 @@ struct ContentView: View {
         
         
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            
             if pureRGB == [] {
-                Text("Hello world")
+                Text("")
             }
             else {
-                Text(String(_:pureRGB[1]))
+                Circle()
+                    .fill(Color(red: Double(pureRGB[0])!/255, green: Double(pureRGB[1])!/255, blue: Double(pureRGB[2])!/255))
             }
 
             Button(action: {
                 getColor(colorBase: "red")
             }, label: {
-                Text("Generate Color a red color")
+                Text("Generate a red color")
+                    .tint(.red)
             })
+            Button(action: {
+                getColor(colorBase: "green")
+            }, label: {
+                Text("Generate a green color")
+                    .tint(.green)
+            })
+            Button(action: {
+                getColor(colorBase: "blue")
+            }, label: {
+                Text("Generate a blue color")
+            })
+
             
             Button("Get Color", action: {
                 getColor(colorBase: "red")
@@ -62,9 +72,11 @@ struct ContentView: View {
             URLSession.shared.dataTask(with: request) { data, request, error in
                 if let colorData = data {
                     print(colorData)
-                    if let colorsFromAPI = try? JSONDecoder().decode(ColorConverter.self, from: colorData) {
+                    if let colorsFromAPI = try?
+                        JSONDecoder().decode(ColorConverter.self, from: colorData) {
                         colors = colorsFromAPI
-                        pureRGB = colors.rgb.split(separator: ", ")
+                        print(colors.rgb)
+                        pureRGB = colors.rgb.prefix(colors.rgb.count-1).suffix(colors.rgb.count-5).split(separator: ", ")
                         print(pureRGB)
                     }
                 }
