@@ -28,12 +28,8 @@ struct ContentView: View {
         
         
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            
             if pureRGB == [] {
-                Text("Hello world")
+                Text("")
             }
             else {
                 Circle()
@@ -43,19 +39,19 @@ struct ContentView: View {
             Button(action: {
                 getColor(colorBase: "red")
             }, label: {
-                Text("Generate Color a red color")
+                Text("Generate a red color")
                     .tint(.red)
             })
             Button(action: {
                 getColor(colorBase: "green")
             }, label: {
-                Text("Generate Color a green color")
+                Text("Generate a green color")
                     .tint(.green)
             })
             Button(action: {
                 getColor(colorBase: "blue")
             }, label: {
-                Text("Generate Color a blue color")
+                Text("Generate a blue color")
             })
 
             
